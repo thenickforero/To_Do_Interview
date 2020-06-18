@@ -13,14 +13,6 @@ app.url_map.strict_slashes = False
 # Set cors to enable extern requests
 cors = CORS(app, resources={r'/api/todos/*': {'origins': '*'}})
 
-# Create dummy data
-todos = dict()
-
-for i in range(5):
-    test = Todo(f'test {i}')
-    todos[test.id] = test
-
-
 @app.route("/")
 def hello():
     """Alerts use of incorrect entrypoint.

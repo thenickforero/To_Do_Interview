@@ -2,8 +2,15 @@
 """
 from views import todo_views
 from flask import (abort, jsonify, request)
-from app import todos
 from todo_model import Todo
+
+
+# Create dummy data
+todos = dict()
+
+for i in range(5):
+    test = Todo(f'test {i}')
+    todos[test.id] = test
 
 
 def create_todo(text):
