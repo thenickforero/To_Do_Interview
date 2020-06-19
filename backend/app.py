@@ -5,6 +5,7 @@ from flask_cors import (CORS, cross_origin)
 from todo_model import Todo
 from views import todo_views
 
+
 # Create api instance
 app = Flask(__name__)
 # Set view for todos
@@ -12,6 +13,7 @@ app.register_blueprint(todo_views)
 app.url_map.strict_slashes = False
 # Set cors to enable extern requests
 cors = CORS(app, resources={r'/api/todos/*': {'origins': '*'}})
+
 
 @app.route("/")
 def hello():

@@ -12,29 +12,28 @@ for i in range(5):
     test = Todo(f'test {i}')
     todos[test.id] = test
 
-
-def create_todo(text):
+def create_todo(description):
     """Saves a To Do in the list.
 
     Args:
-        text (str): the text if the To Do.
+        description (str): the description if the To Do.
 
     Returns:
         [Todo]: an array with all the To Do's.
     """
-    new_todo = Todo(text)
+    new_todo = Todo(description)
     todos[new_todo.id] = new_todo
     return todos
 
 
-def update_todo(todo_id, text=None, completed=None):
+def update_todo(todo_id, description, completed):
     """Updates the state of a To Do in the list according to its id.
 
     Args:
         todo_id (str):              the UUID of the To Do.
-        text (str, optional):       the new text of the To Do.
+        description (str):       the new description of the To Do.
                                     Defaults to None to avoid its update.
-        completed (bool, optional): the status of the To Do.
+        completed (bool): the status of the To Do.
                                     Defaults to None to avoid its update.
 
     Returns:
@@ -42,7 +41,7 @@ def update_todo(todo_id, text=None, completed=None):
     """
     if todo_id in todos:
         todo = todos[todo_id]
-        todo.update_todo(text, completed)
+        todo.update_todo(description, completed)
     return todos
 
 
@@ -90,30 +89,26 @@ def todos_handler():
     data = request.get_json()
 
     if method in ('POST', 'PUT'):
-        text = data.get('text')
-        if not text:
-            abort('404', 'Missing text')
+        description = data.get('description')
+        if not description:
+            abort('404', 'Missing description')
 
     if method in ('PUT', 'DELETE'):
         todo_id = data.get('id')
         if not todo_id:
-            abort('404', 'Missing text')
-
-    if method == 'GET':
-        return get_todos()
+            abort('404', 'Missing description')
 
     if method == 'POST':
-        new_todo = create_todo(text)
-        return (jsonify({'new_todo': new_todo}), 201)
+        create_todo(description)
 
     if method == 'PUT':
-        updated_todo = update_todo(todo_id, text)
-        return (jsonify({'updated_todo': updated_todo}), 200)
+        completed = bool(data.get('completed'))
+        update_todo(todo_id, description, completed)
 
     if method == 'DELETE':
         delete_todo(todo_id)
-        return ("Todo deleted", 200)
 
+    return get_todos()
 
 @todo_views.route('/<todo_id>')
 def get_todo_handler(todo_id):

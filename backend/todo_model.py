@@ -8,29 +8,28 @@ class Todo:
     """Represents a basic To Do with status and dates.
     """
 
-    def __init__(self, text: str):
+    def __init__(self, description: str):
         """Initialize a To Do.
 
         Args:
-            text (str): the data contained in the To Do.
+            description (str): the data contained in the To Do.
         """
-        self.text = text
+        self.description = description
         self.created_at = datetime.now()
         self.updated_at = self.created_at
         self.id = str(uuid4())
         self.completed = False
 
-    def update_todo(self, text, completed):
+    def update_todo(self, description, completed):
         """Update a To Do with new valid fields.
 
         Args:
-            text (str): the data contained in the To Do.
+            description (str): the data contained in the To Do.
             completed (bool): the status of the To Do.
         """
-        if text:
-            self.text = text
-        if completed:
-            self.completed = completed
+        if description:
+            self.description = description
+        self.completed = completed
         self.updated_at = datetime.now()
 
     def to_json(self):
